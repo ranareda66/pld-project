@@ -1,0 +1,141 @@
+"Name"     = 'GoldParser Python Like Syntax'
+"Author"   = 'Rana'
+"Version"  = '1.0'
+"About"    = 'The provided grammar defines a simplified subset of Python syntax using Backus-Naur Form (BNF) notation'
+           
+
+
+{IdLetter}       = {Letter} + [_]
+{IdAlphaNumeric} = {Alphanumeric} + [_]
+{String Char}    = {Printable} - ["]
+{Quote}          = ['']              
+    
+
+
+
+Identifier     = {IdLetter}{IdAlphaNumeric}*
+StringLiteral  = '"'{String Char}*'"' | {Quote}{String Char}*{Quote}
+BooleanLiteral =  True | False         
+integer        = {digit}+
+float          = {digit}*'.'{digit}*
+
+
+"Case Sensitive" = 'True'
+"Start Symbol"   = <Program>
+                 
+Comment Line = '//'
+             
+
+
+! The grammar starts below
+<Program>    ::= <statement_list>
+           
+<statement_list>  ::= <statement>
+                   | <statement_list> <statement>
+           
+<statement> ::= <simple_statement>
+             | <compound_statement>
+             
+<simple_statement> ::= <Variable Decs> 
+                    | <import_statement> 
+                    | <print_statement>
+                    | <delete_statement>
+
+                        
+
+
+<Variable Decs>
+        ::= <Variable Declarator>
+         |  <Variable Decs> ',' <Variable Declarator>
+
+<Variable Declarator>
+        ::= <Identifier>
+         |  <Identifier> '=' <expression>
+
+<Identifier>  ::= Identifier       
+                        
+                        
+<import_statement> ::= import <module_name> 
+                    |  import <module_name> <module_alias>
+                    
+<module_name> ::= <Identifier> | <module_name> '.' <Identifier>
+               
+<module_alias> ::= as <Identifier>
+                
+
+                    
+<print_statement> ::= print '(' <expression> ')' 
+                   | print '(' <expression> ',' <expression> ')'
+                   
+<delete_statement> ::= del <Identifier> 
+                    
+<compound_statement> ::= <if_statement> 
+                        | <for_statement> 
+                        | <while_statement> 
+                        | <do_while_statement> 
+                        | <switch_statement> 
+                        
+<if_statement> ::= if <cond> ':' <statement_list> 
+                | if <cond> ':'  <statement_list>  else ':'  <statement_list>  
+                | if <cond> ':'  <statement_list>  elif <cond> ':'  <statement_list>  else ':'  <statement_list> 
+            
+
+<cond> ::= <expression> <op> <expression> 
+        | <literal>
+        | <Identifier>
+                     
+<op> ::= '<' | '>' | '==' | '!='
+                
+
+
+
+<for_statement> ::= for <Identifier> in <cond> ':'  <statement_list> 
+                 
+<while_statement> ::= while <cond> ':'  <statement_list> 
+                   
+<do_while_statement> ::= do ':'  <statement_list>  while <cond> 
+
+
+
+<switch_statement> ::= switch '(' <cond> ')'  '{' <switch_cases> <defualt_case> '}' 
+                    
+<switch_cases>     ::=  <switch_cases> case <literal> ':' <statement_list> break 
+                    | case <literal> ':'  <statement_list> break 
+                           
+<defualt_case>     ::= default ':' <statement_list> break 
+
+<expression> ::= <expression> '+' <term>
+              | <expression> '-' <term>
+              | <term>
+              
+
+<term> ::= <term> '*' <factor>
+        | <term> '/' <factor>
+        | <term> '%' <factor>
+        | <factor>
+
+
+<factor> ::= <factor> '**' <exp>
+          | <exp>
+          
+
+<exp> ::= '('<expression>')'
+       | <Identifier>
+       | <literal>
+
+
+
+<literal> ::= <number> | <StringLiteral> | <BooleanLiteral> 
+          
+<number> ::= <integer> | <float>
+          
+<integer> ::= integer
+    
+<float> ::= float
+         
+<StringLiteral> ::= StringLiteral
+                 
+<BooleanLiteral> ::= BooleanLiteral
+
+
+
